@@ -15,7 +15,19 @@ module.exports = app => {
 
     app.get('/books', (req, res) => {
         res.marko(
-            require('../views/books/list/list.marko')
+            require('../views/books/list/list.marko'),
+            {
+                books: [
+                    {
+                        id: 1,
+                        title: "Node Fundamentals"
+                    },
+                    {
+                        id: 2,
+                        title: "Node Advanced concepts"
+                    }
+                ]
+            }
         );
     });
 }

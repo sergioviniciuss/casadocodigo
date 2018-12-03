@@ -14,15 +14,8 @@ module.exports = app => {
     });
 
     app.get('/books', (req, res) => {
-        res.send(`
-        <html>
-            <head>
-            <meta charset="utf-8">
-            </head>
-            <body>
-            <h1> Books!</h1>
-            </body>
-        </html>
-        `);
+        res.marko(
+            require('../views/books/list/list.marko')
+        );
     });
 }

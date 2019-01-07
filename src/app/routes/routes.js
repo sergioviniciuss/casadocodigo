@@ -17,23 +17,14 @@ module.exports = app => {
 
     app.get('/books', (req, res) => {
         const bookDAO = new BookDAO(db);
-        bookDAO.list((err, result) => {
-            res.marko(
-                require('../views/books/list/list.marko'),
-                {
-                    books: result,
-                }
-            );
-        });
-
-
-        // db.all('SELECT * FROM books', (err, result) => {
-        //     res.marko(
-        //         require('../views/books/list/list.marko'),
-        //         {
-        //             books: result,
-        //         }
-        //     );
-        // })
+        bookDAO.list()
+            .then(books => res.marko(
+                    require('../views/books/list/list.marko'),
+                    {
+                        books,
+                    }
+                )
+            )
+            .catch(err => console.log(err));
     });
 }

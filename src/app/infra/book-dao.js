@@ -3,11 +3,17 @@ class BookDAO {
         this._db = db;
     }
 
-    list(callback) {
-        this._db.all(
-            'SELECT * FROM books',
-            (err, res) => callback(err, res)
-        )
+    list() {
+        return new Promise((resolve, reject) => {
+            this._db.all(
+                'SELECT * FROM books',
+                (err, res) => {
+                    if (err) return reject('unable to resolve query');
+                    resolve(res);
+                }
+            )
+
+        })
     }
 }
 

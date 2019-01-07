@@ -1,3 +1,4 @@
+const BookDAO = require('../infra/book-dao');
 const db = require('../../config/database');
 
 module.exports = app => {
@@ -15,13 +16,24 @@ module.exports = app => {
     });
 
     app.get('/books', (req, res) => {
-        db.all('SELECT * FROM books', (err, result) => {
+        const bookDAO = new BookDAO(db);
+        bookDAO.list((err, result) => {
             res.marko(
                 require('../views/books/list/list.marko'),
                 {
                     books: result,
                 }
             );
-        })
+        });
+
+
+        // db.all('SELECT * FROM books', (err, result) => {
+        //     res.marko(
+        //         require('../views/books/list/list.marko'),
+        //         {
+        //             books: result,
+        //         }
+        //     );
+        // })
     });
 }

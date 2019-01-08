@@ -39,6 +39,60 @@ class BookDAO {
             );
         })
     }
+
+    update(book) {
+        return new Promise((resolve, reject) => {
+            this._db.run(`
+                    UPDATE books SET
+                    title = ?,
+                    price = ?,
+                    description = ?
+                    WHERE id = ?
+                `,
+                [
+                    book.title,
+                    book.price,
+                    book.description,
+                    book.id
+                ],
+                (err) => {
+                    if (err) {
+                        console.log(err)
+                        return reject('Unable to update book...')
+                    }
+                    return resolve();
+                }
+            )
+        })
+    }
+    remove(id) {
+        return new Promise((resolve, reject) => {
+            this._db.run(
+                'DELETE FROM books WHERE id = ?',
+                [id],
+                (err) => {
+                    if (err) {
+                        console.log(err)
+                        return reject('Unable to update book...')
+                    }
+                    return resolve();
+                }
+            )
+        })
+    }
+
+    findById(id) {
+        return new Promise((resolve, reject) => {
+            this._db.get(
+                `SELECT * FROM books WHERE id = ?`,
+                [id],
+                (err, book) => {
+                    if (err) return reject('unable to find book');
+                    resolve(book);
+                }
+            )
+        })
+    }
 }
 
 module.exports = BookDAO;

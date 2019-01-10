@@ -28,8 +28,10 @@ module.exports = app => {
             .catch(err => console.log(err));
     });
 
-    app.get('/books/form', (req, res) => {
-        res.marko(require('../views/books/form/form.marko'));
+    app.get('/books/form', (req, res) => {res.marko(
+            require('../views/books/form/form.marko'),
+            { book: {} }
+        );
     });
 
     app.post('/books', (req, res) => {
@@ -37,6 +39,27 @@ module.exports = app => {
         const bookDAO = new BookDAO(db);
         bookDAO.add(req.body)
             .then(res.redirect('/books'))
+            .catch(err => console.log(err));
+    })
+
+    app.put('/books', (req, res) => {
+        console.log(req.body);
+        const bookDAO = new BookDAO(db);
+        bookDAO.update(req.body)
+            .then(res.redirect('/books'))
+            .catch(err => console.log(err));
+    })
+
+    app.get('/books/form/:id',(req, res) => {
+        const id = req.params.id;
+        const bookDAO = new BookDAO(db);
+        bookDAO.findById(id)
+            .then(book => {
+                console.log(book);
+                res.marko(
+                require('../views/books/form/form.marko'),
+                { book }
+            )})
             .catch(err => console.log(err));
     })
 

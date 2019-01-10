@@ -39,4 +39,12 @@ module.exports = app => {
             .then(res.redirect('/books'))
             .catch(err => console.log(err));
     })
+
+    app.delete('/books/:id', (req, res) => {
+        const id = req.params.id;
+        const bookDAO = new BookDAO(db);
+        bookDAO.remove(id)
+        .then(() => res.status(200).end())
+        .catch(err => console.log(err));
+    })
 }
